@@ -1,4 +1,5 @@
-pragma solidity ^0.8.2;
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.4;
 
 import "./ERC721.sol";
 
@@ -35,5 +36,7 @@ contract SuperMarioWorld is ERC721{
 		emit Transfer(address(0), msg.sender, tokenCount);
 	}
 
-	// supportsInterface
+	function supportsInterface(bytes4 interfaceId) public pure override returns(bool) {
+		return interfaceId == 0x80ac58cd || interfaceId == 0x5b5e139f;
+	}
 }
