@@ -2,8 +2,10 @@
 pragma solidity ^0.8.4;
 
 contract ERC1155 {
-	  // event TransferSingle()
-    // event TransferBatch()
+	event TransferSingle(address indexed _operator, address indexed _from, address indexed _to, uint256 _id, uint256 _value);
+
+    event TransferBatch(address indexed _operator, address indexed _from, address indexed _to, uint256[] _ids, uint256[] _values);
+
     event ApprovalForAll(address indexed _owner, address indexed _operator, bool _approved);
     // event URI()
 
@@ -41,7 +43,53 @@ contract ERC1155 {
         _operatorApprovals[msg.sender][operator] = approved;
         emit ApprovalForAll(msg.sender, operator, approved);
     }
-    // function safeTransferFrom()
-    // function safeBatchTransferFrom()
-    // function supportsInterface()
+
+     function _transfer(address from, address to, uint256 id, uint256 amount) private {
+        uint256 fromBalance = _balances[id][from];
+        require(fromBalance >= amount, "Insufficient balance");
+        _balances[id][from] = fromBalance - amount;
+        _balances[id][to] += amount;
+    }
+
+    function safeTransferFrom( address from, address to, uint256 id, uint256 amount) public virtual {
+        require( from == msg.sender || isApprovedForAll(from, msg.sender), "Msg.sender is not the owner or approved for transfer");
+        require( to != address(0), "Address is 0");
+        _transfer(from, to, id, amount);
+        emit TransferSingle(msg.sender, from, to, id, amount);
+
+        require(_checkOnERC1155Received(), "Receiver is not implemented");
+    }
+
+    function _checkOnERC1155Received() private pure returns(bool) {
+        // Oversimplified version
+        return true;
+    }
+
+    function safeBatchTransferFrom( address from, address to, uint256[] memory ids, uint256[] memory amounts) public {
+        require( from == msg.sender || isApprovedForAll(from, msg.sender), "Msg.sender is not the owner or approved for transfer");
+        require( to != address(0), "Address is 0");
+        require( ids.length == amounts.length, "Ids and amounts are not the same");
+        for (uint256 i = 0; i < ids.length; ++i) {
+            uint256 id = ids[i];
+            uint256 amount = amounts[i];
+
+            _transfer(from, to, id, amount);
+        }
+
+        emit TransferBatch(msg.sender, from, to, ids, amounts);
+        require(_checkOnBatchERC1155Received(), "Receiver is not implemented");
+
+    }
+
+    function _checkOnBatchERC1155Received() private pure returns(bool) {
+        // Oversimplified version
+        return true;
+    }
+	
+    // ERC165 Compliant
+    // Tell everyone that we support the ERC1155 function
+    // interfaceId == 0xd9b67a26
+    function supportsInterface(bytes4 interfaceId) public pure virtual returns(bool) {
+        return interfaceId == 0xd9b67a26;
+    }
 }
