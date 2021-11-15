@@ -1,15 +1,8 @@
-# Basic Sample Hardhat Project
+# Super Mario Collection
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.
+Learned ERC721 standard, ERC1155 standard, and using OpenZeppelin to create secure smart contract to mint NFTs. The collection is on OpenSea Testnet, and metadata is hosted on Pinata.  
 
-Try running some of the following tasks:
+![collection](https://user-images.githubusercontent.com/47575608/141864888-667543d3-1ae0-46f0-8e0f-7f9323269ba8.png)
 
-```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-node scripts/sample-script.js
-npx hardhat help
-```
+
+
