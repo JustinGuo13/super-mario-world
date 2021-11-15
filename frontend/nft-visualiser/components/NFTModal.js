@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { NftPhoto } from './NFTCard';
+import { NFTProgressBar } from './NFTProgressBar';
 
 const NFTModal = (props) => {
 	let nft = props.nft;
@@ -29,6 +30,7 @@ const NFTModal = (props) => {
 											{attribute.value}
 										</AttributeText>
 									</div>
+									<NFTProgressBar percent={attribute.value * 10} />
 								</div>
 							))}
 					</div>
@@ -68,6 +70,10 @@ const ModalGrid = styled.div`
 	display: inline-grid;
 	grid-template-columns: 1fr 1fr;
 	grid-gap: 40px;
+
+	@media (max-width: 900px) {
+		grid-template-columns: 1fr;
+	}
 `;
 const Modal = styled.div`
 	position: fixed;
@@ -89,6 +95,10 @@ const ModalContent = styled.div`
 	background-color: white;
 	border-radius: 20px;
 	padding: 20px;
+
+	@media (max-width: 900px) {
+		width: 400px;
+	}
 `;
 
 export { NFTModal };
